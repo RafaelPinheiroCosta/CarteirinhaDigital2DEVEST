@@ -35,7 +35,7 @@ class ApiLoginRepositoryImpl(private val api: AuthApi) : LoginRepository {
         return when (throwable) {
             is HttpException -> mapHttpException(throwable)
             is IOException -> IllegalStateException(
-                "N├úo foi poss├¡vel conectar ├á API local. Verifique se ela est├í rodando."
+                "Não foi possível conectar à API local. Verifique se ela está rodando."
             )
 
             else -> IllegalStateException(throwable.message ?: "Erro ao fazer login.")
@@ -44,7 +44,7 @@ class ApiLoginRepositoryImpl(private val api: AuthApi) : LoginRepository {
 
     private fun mapHttpException(exception: HttpException): Throwable {
         if (exception.code() == 401) {
-            return IllegalArgumentException("Login ou senha inv├ílidos")
+            return IllegalArgumentException("Login ou senha inválidos")
         }
 
         val messageFromBody = exception

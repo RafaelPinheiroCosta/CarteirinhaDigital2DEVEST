@@ -25,7 +25,7 @@ class FakeAuthRepository : LoginRepository {
                 )
             )
         } else {
-            Result.failure(IllegalArgumentException("Login ou senha inv├ílidos"))
+            Result.failure(IllegalArgumentException("Login ou senha inválidos"))
         }
     }
 }

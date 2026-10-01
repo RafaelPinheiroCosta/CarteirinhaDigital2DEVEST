@@ -130,7 +130,7 @@ private fun LoginContentErrorPreview() {
             uiState = LoginUiState(
                 usuario = "aluno",
                 senha = "000",
-                errorMessage = "Login ou senha inv├ílidos",
+                errorMessage = "Login ou senha inválidos",
                 credentialError = true
             ),
             onEvent = {}
