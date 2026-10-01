@@ -40,7 +40,7 @@ fun AppNavHost(
             LoginScreen(
                 navController = navController,
                 onLoginSucesso = { usuario ->
-                    container.authTokenStore.setToken(usuario.token)
+                    container.sessionTokenStore.salvar(usuario.token)
                     sessionViewModel.setUsuarioLogado(usuario)
                     navController.navigate(Routes.HomeAluno.route)
                 }
