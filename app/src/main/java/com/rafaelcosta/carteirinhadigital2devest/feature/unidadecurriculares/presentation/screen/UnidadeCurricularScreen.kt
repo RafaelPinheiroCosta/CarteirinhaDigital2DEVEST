@@ -13,40 +13,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.data.dataSource
-import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.domain.model.UnidadeCurricular
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.presentation.UnidadeCurricularViewModel
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.presentation.component.UnidadeCurricularCard
-
 
 @Composable
 fun UnidadeCurricularScreen(
     modifier: Modifier = Modifier,
-    viewModel: UnidadeCurricularViewModel = viewModel()
+    viewModel: UnidadeCurricularViewModel
 ) {
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage = uiState.errorMessage
 
-    LaunchedEffect(Unit) { viewModel.carregar() }
+    LaunchedEffect(Unit) {
+        viewModel.carregar()
+    }
 
-    when{
-        uiState.isLoading ->{
+    when {
+        uiState.isLoading -> {
             Box(
-                modifier =modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 CircularProgressIndicator()
             }
         }
-        errorMessage != null ->{
+
+        errorMessage != null -> {
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -59,43 +57,46 @@ fun UnidadeCurricularScreen(
                     color = MaterialTheme.colorScheme.error
                 )
                 Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = { viewModel.carregar()}
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    onClick = {
+                        viewModel.carregar()
+                    }
                 ) {
-                    Text(text = "Tente Novamente")
+                    Text("Tentar novamente")
                 }
             }
         }
-        uiState.listaUnidadesCurriculares.isEmpty() ->{
+
+        uiState.unidades.isEmpty() -> {
             Box(
-                modifier =modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
-                Text(text = "Nenhuma unidade curricular encontrada.")
+            ) {
+                Text("Nenhuma unidade curricular encontrada.")
             }
         }
+
         else -> {
             LazyColumn(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(
                         horizontal = 16.dp,
                         vertical = 12.dp
                     ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement
+                    .spacedBy(12.dp)
             ) {
-                items(uiState.listaUnidadesCurriculares) { unidadeCurricular ->
-                    UnidadeCurricularCard(unidadeCurricular = unidadeCurricular)
+                items(
+                    items = uiState.unidades,
+                    key = { it.id }
+                ) { unidadeCurricular ->
+                    UnidadeCurricularCard(
+                        unidadeCurricular = unidadeCurricular
+                    )
                 }
             }
         }
     }
-}
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun UnidadeCurricularScreenPreview() {
-    UnidadeCurricularScreen()
 }

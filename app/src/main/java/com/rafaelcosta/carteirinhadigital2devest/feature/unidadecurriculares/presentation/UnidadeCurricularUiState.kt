@@ -3,8 +3,7 @@ package com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.pr
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.domain.model.UnidadeCurricular
 
 data class UnidadeCurricularUiState(
-    val listaUnidadesCurriculares: List<UnidadeCurricular> = emptyList(),
     val isLoading: Boolean = false,
+    val unidades: List<UnidadeCurricular> = emptyList(),
     val errorMessage: String? = null
-) {
-}
+)
