@@ -1,7 +1,7 @@
 package com.rafaelcosta.carteirinhadigital2devest.app.di
 
 import com.rafaelcosta.carteirinhadigital2devest.core.auth.SessionTokenStore
-import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.repository.LoginRepository
+import com.rafaelcosta.carteirinhadigital2devest.feature.login.domain.repository.LoginRepository
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.domain.repository.UnidadeCurricularRepository
 
 interface AppContainer {

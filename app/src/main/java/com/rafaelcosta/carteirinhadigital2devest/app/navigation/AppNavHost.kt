@@ -18,6 +18,8 @@ import com.rafaelcosta.carteirinhadigital2devest.app.session.SessionViewModel
 import com.rafaelcosta.carteirinhadigital2devest.app.session.SessionViewModelFactory
 import com.rafaelcosta.carteirinhadigital2devest.feature.carteirinha.presetantion.screen.CarteirinhaScreen
 import com.rafaelcosta.carteirinhadigital2devest.feature.home_aluno.presentation.screen.HomeScreen
+import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.LoginViewModel
+import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.factory.LoginViewModelFactory
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.screen.LoginScreen
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.presentation.UnidadeCurricularViewModel
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.presentation.factory.UnidadeCurricularViewModelFactory
@@ -50,8 +52,21 @@ fun AppNavHost(
 
         composable(Routes.Login.route) {
 
+            val loginFactory = remember(
+                container.loginRepository
+            ) {
+                LoginViewModelFactory(
+                    repository = container.loginRepository
+                )
+            }
+
+            val loginViewModel: LoginViewModel =
+                viewModel(
+                    factory = loginFactory
+                )
+
             LoginScreen(
-                navController = navController,
+                viewModel = loginViewModel,
                 onLoginSucesso = { usuario ->
 
                     sessionViewModel.setUsuarioLogado(usuario)

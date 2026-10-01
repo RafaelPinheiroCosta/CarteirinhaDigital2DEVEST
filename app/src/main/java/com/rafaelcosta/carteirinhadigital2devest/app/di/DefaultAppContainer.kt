@@ -4,8 +4,8 @@ import com.rafaelcosta.carteirinhadigital2devest.core.auth.SessionTokenStore
 import com.rafaelcosta.carteirinhadigital2devest.core.network.NetworkClient
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.remote.service.AuthApi
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.repository.ApiLoginRepositoryImpl
-import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.repository.FakeLoginRepositoryImpl
-import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.repository.LoginRepository
+import com.rafaelcosta.carteirinhadigital2devest.feature.login.data.repository.FakeAuthRepository
+import com.rafaelcosta.carteirinhadigital2devest.feature.login.domain.repository.LoginRepository
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.data.remote.service.UnidadeCurricularApi
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.data.repository.ApiUnidadeCurricularRepositoryImpl
 import com.rafaelcosta.carteirinhadigital2devest.feature.unidadecurriculares.domain.repository.UnidadeCurricularRepository
@@ -30,7 +30,7 @@ class DefaultAppContainer : AppContainer {
     }
     override val loginRepository : LoginRepository by lazy {
         if (USE_FAKE_LOGIN_REPOSITORY ) {
-            FakeLoginRepositoryImpl()
+            FakeAuthRepository()
         } else {
             ApiLoginRepositoryImpl(
                 api =authApi
