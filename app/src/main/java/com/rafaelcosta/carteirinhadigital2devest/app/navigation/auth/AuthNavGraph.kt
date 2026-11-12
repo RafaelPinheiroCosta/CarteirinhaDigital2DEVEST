@@ -3,9 +3,14 @@ package com.rafaelcosta.carteirinhadigital2devest.app.navigation.auth
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.rafaelcosta.carteirinhadigital2devest.app.navigation.GraphRoutes
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.domain.repository.CadastroRepository
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.presentation.factory.CadastroViewModelFactory
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.presentation.screen.CadastroScreen
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.presentation.CadastroViewModel
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.domain.model.UsuarioLogado
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.domain.repository.LoginRepository
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.LoginViewModel
@@ -14,6 +19,8 @@ import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.scre
 
 fun NavGraphBuilder.authNavGraph(
     loginRepository: LoginRepository,
+    cadastroRepository: CadastroRepository,
+    navController: NavHostController,
     onLoginSucesso: (UsuarioLogado) -> Unit
 ) {
     navigation(
@@ -33,8 +40,16 @@ fun NavGraphBuilder.authNavGraph(
 
             LoginScreen(
                 viewModel = loginViewModel,
-                onLoginSucesso = onLoginSucesso
+                onLoginSucesso = onLoginSucesso,
+                onCadastrarClick = { navController.navigate(AuthRoutes.CADASTRO) }
             )
+        }
+        composable(route = AuthRoutes.CADASTRO) {
+            val factory = remember(cadastroRepository) {
+                CadastroViewModelFactory(repository = cadastroRepository)
+            }
+            val vm: CadastroViewModel = viewModel(factory = factory)
+            CadastroScreen(viewModel = vm, onVoltar = { navController.popBackStack() })
         }
     }
 }

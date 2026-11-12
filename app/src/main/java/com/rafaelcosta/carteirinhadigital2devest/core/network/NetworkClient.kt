@@ -17,7 +17,8 @@ class NetworkClient(
 
         return HttpLoggingInterceptor().apply {
             redactHeader("Authorization")
-            level = HttpLoggingInterceptor.Level.BODY
+            // Evita registrar senha de cadastro/login e token do response no Logcat.
+            level = HttpLoggingInterceptor.Level.BASIC
         }
     }
     private val publicOkHttpClient:OkHttpClient by lazy {
@@ -37,9 +38,7 @@ class NetworkClient(
             ).build()
     }
 
-    private fun createRetrofit(
-        client: OkHttpClient
-    ): Retrofit {
+    private fun createRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)

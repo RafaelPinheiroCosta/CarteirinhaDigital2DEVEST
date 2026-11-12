@@ -1,5 +1,11 @@
 package com.rafaelcosta.carteirinhadigital2devest.app.di
 
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.data.remote.service.CadastroPublicoApi
+import com.rafaelcosta.carteirinhadigital2devest.feature.admin.data.remote.service.GestaoSolicitacoesApi
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.data.repository.ApiCadastroRepositoryImpl
+import com.rafaelcosta.carteirinhadigital2devest.feature.admin.data.repository.ApiGestaoSolicitacoesRepositoryImpl
+import com.rafaelcosta.carteirinhadigital2devest.feature.cadastro.domain.repository.CadastroRepository
+import com.rafaelcosta.carteirinhadigital2devest.feature.admin.domain.repository.GestaoSolicitacoesRepository
 import com.rafaelcosta.carteirinhadigital2devest.core.auth.SessionTokenStore
 import com.rafaelcosta.carteirinhadigital2devest.core.network.NetworkClient
 import com.rafaelcosta.carteirinhadigital2devest.feature.aluno.unidadescurriculares.data.remote.service.UnidadeCurricularApi
@@ -25,6 +31,20 @@ class DefaultAppContainer : AppContainer {
         networkClient.createAuthenticated(UnidadeCurricularApi::class.java)
     }
 
+
+
+    override val cadastroRepository: CadastroRepository by lazy {
+        ApiCadastroRepositoryImpl(
+            api = networkClient.createPublic(CadastroPublicoApi::class.java)
+        )
+    }
+
+    override val gestaoSolicitacoesRepository: GestaoSolicitacoesRepository by lazy {
+        ApiGestaoSolicitacoesRepositoryImpl(
+            api = networkClient.createAuthenticated(GestaoSolicitacoesApi::class.java)
+        )
+    }
+
     override val loginRepository: LoginRepository by lazy {
         if (USE_FAKE_LOGIN_REPOSITORY) {
             FakeAuthRepository()
@@ -35,6 +55,8 @@ class DefaultAppContainer : AppContainer {
     override val unidadeCurricularRepository: UnidadeCurricularRepository by lazy {
         ApiUnidadeCurricularRepositoryImpl(api = unidadeCurricularApi)
     }
+
+
 
     companion object {
         private const val BASE_URL = "http://10.0.2.2:8080/"

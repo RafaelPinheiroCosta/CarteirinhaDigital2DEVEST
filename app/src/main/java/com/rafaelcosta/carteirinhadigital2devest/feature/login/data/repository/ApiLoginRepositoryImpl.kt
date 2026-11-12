@@ -77,6 +77,10 @@ class ApiLoginRepositoryImpl(
         exception: HttpException
     ): Throwable {
 
+        if (exception.code() == 403) {
+            return IllegalStateException("Cadastro aguardando aprovação do administrador.")
+        }
+
         if (exception.code() == 401) {
 
             return IllegalArgumentException(

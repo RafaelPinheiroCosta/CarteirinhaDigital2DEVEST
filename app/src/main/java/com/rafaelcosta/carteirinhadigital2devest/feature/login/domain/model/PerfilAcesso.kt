@@ -2,7 +2,8 @@ package com.rafaelcosta.carteirinhadigital2devest.feature.login.domain.model
 
 enum class PerfilAcesso {
     ALUNO,
-    PROFESSOR;
+    PROFESSOR,
+    ADMIN;
 
     companion object {
 
@@ -19,6 +20,9 @@ enum class PerfilAcesso {
 
                 "PROFESSOR" ->
                     PROFESSOR
+
+                "ADMIN" ->
+                    ADMIN
 
                 else ->
                     throw IllegalArgumentException(

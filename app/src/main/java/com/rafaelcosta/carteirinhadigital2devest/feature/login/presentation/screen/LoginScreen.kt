@@ -14,6 +14,7 @@ import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.Logi
 fun LoginScreen(
     modifier: Modifier = Modifier,
     onLoginSucesso: (UsuarioLogado) -> Unit,
+    onCadastrarClick: () -> Unit,
     viewModel: LoginViewModel
 ) {
     val uiState by
@@ -35,6 +36,7 @@ fun LoginScreen(
     LoginContent(
         uiState = uiState,
         onEvent = viewModel::onEvent,
+        onCadastrarClick = onCadastrarClick,
         modifier = modifier.fillMaxSize()
     )
 }

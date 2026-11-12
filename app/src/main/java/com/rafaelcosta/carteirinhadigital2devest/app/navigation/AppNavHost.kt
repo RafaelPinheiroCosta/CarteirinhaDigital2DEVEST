@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.rafaelcosta.carteirinhadigital2devest.app.di.AppContainer
+import com.rafaelcosta.carteirinhadigital2devest.app.navigation.admin.adminNavGraph
 import com.rafaelcosta.carteirinhadigital2devest.app.navigation.aluno.alunoNavGraph
 import com.rafaelcosta.carteirinhadigital2devest.app.navigation.auth.authNavGraph
 import com.rafaelcosta.carteirinhadigital2devest.app.navigation.professor.professorNavGraph
@@ -35,6 +36,7 @@ fun AppNavHost(
         return when (perfil) {
             PerfilAcesso.ALUNO -> GraphRoutes.ALUNO
             PerfilAcesso.PROFESSOR -> GraphRoutes.PROFESSOR
+            PerfilAcesso.ADMIN -> GraphRoutes.ADMIN
         }
     }
 
@@ -57,6 +59,8 @@ fun AppNavHost(
     ) {
         authNavGraph(
             loginRepository = container.loginRepository,
+            cadastroRepository = container.cadastroRepository,
+            navController = navController,
             onLoginSucesso = { usuario ->
                 sessionViewModel.setUsuarioLogado(usuario)
                 replaceGraph(
@@ -93,28 +97,38 @@ fun AppNavHost(
             }
         )
 
+
+        adminNavGraph(
+            navController = navController,
+            usuarioLogadoFlow = sessionViewModel.usuarioLogado,
+            gestaoSolicitacoesRepository = container.gestaoSolicitacoesRepository,
+            darkTheme = darkTheme,
+            onDarkThemeChange = onDarkThemeChange,
+            onLogout = {
+                sessionViewModel.limparSessao()
+                replaceGraph(GraphRoutes.ADMIN, GraphRoutes.AUTH)
+            },
+            onSessaoAusente = {
+                replaceGraph(GraphRoutes.ADMIN, GraphRoutes.AUTH)
+            },
+            onPerfilInvalido = { perfil ->
+                replaceGraph(GraphRoutes.ADMIN, graphFor(perfil))
+            }
+        )
+
         professorNavGraph(
             usuarioLogadoFlow = sessionViewModel.usuarioLogado,
             darkTheme = darkTheme,
             onDarkThemeChange = onDarkThemeChange,
             onLogout = {
                 sessionViewModel.limparSessao()
-                replaceGraph(
-                    currentGraph = GraphRoutes.PROFESSOR,
-                    destinationGraph = GraphRoutes.AUTH
-                )
+                replaceGraph(GraphRoutes.PROFESSOR, GraphRoutes.AUTH)
             },
             onSessaoAusente = {
-                replaceGraph(
-                    currentGraph = GraphRoutes.PROFESSOR,
-                    destinationGraph = GraphRoutes.AUTH
-                )
+                replaceGraph(GraphRoutes.PROFESSOR, GraphRoutes.AUTH)
             },
             onPerfilInvalido = { perfil ->
-                replaceGraph(
-                    currentGraph = GraphRoutes.PROFESSOR,
-                    destinationGraph = graphFor(perfil)
-                )
+                replaceGraph(GraphRoutes.PROFESSOR, graphFor(perfil))
             }
         )
     }

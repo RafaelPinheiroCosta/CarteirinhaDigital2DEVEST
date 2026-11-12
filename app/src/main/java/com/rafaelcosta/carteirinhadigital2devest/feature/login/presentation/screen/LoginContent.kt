@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rafaelcosta.carteirinhadigital2devest.core.designsystem.theme.CarteirinhaDigital2DEVESTTheme
+import com.rafaelcosta.carteirinhadigital2devest.core.designsystem.theme.CarteirinhaDigitalModeloTheme
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.LoginEvent
 import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.LoginUiState
 
@@ -31,7 +32,8 @@ import com.rafaelcosta.carteirinhadigital2devest.feature.login.presentation.Logi
 fun LoginContent(
     modifier: Modifier = Modifier,
     uiState: LoginUiState,
-    onEvent:(LoginEvent)-> Unit
+    onEvent:(LoginEvent)-> Unit,
+    onCadastrarClick: () -> Unit = {}
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,13 +105,16 @@ fun LoginContent(
                 )
             }
         }
+        TextButton(onClick = onCadastrarClick) {
+            Text("Não tenho conta — solicitar acesso")
+        }
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun LoginContentPreview() {
-    CarteirinhaDigital2DEVESTTheme {
+    CarteirinhaDigitalModeloTheme {
         LoginContent(
             modifier = Modifier.fillMaxSize(),
             uiState = LoginUiState(
@@ -124,7 +129,7 @@ private fun LoginContentPreview() {
 @Preview(showBackground = true, name = "Login Error")
 @Composable
 private fun LoginContentErrorPreview() {
-    CarteirinhaDigital2DEVESTTheme {
+    CarteirinhaDigitalModeloTheme {
         LoginContent(
             modifier = Modifier.fillMaxSize(),
             uiState = LoginUiState(

@@ -4,4 +4,5 @@ object GraphRoutes {
     const val AUTH = "graph/auth"
     const val ALUNO = "graph/aluno"
     const val PROFESSOR = "graph/professor"
+    const val ADMIN = "graph/admin"
 }
